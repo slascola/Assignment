@@ -146,6 +146,49 @@ class Vein:
       self.resource_distance = resource_distance
       self.pending_actions = []
 
+   def set_position(entity, point):
+      entity.position = point
+
+   def get_position(entity):
+      return entity.position
+
+   def get_images(entity):
+      return entity.imgs
+
+   def get_image(entity):
+      return entity.imgs[entity.current_img]
+
+   def get_rate(entity):
+      return entity.rate        
+
+   def get_resource_distance(entity):
+      return entity.resource_distance
+
+   def get_name(entity): 
+      return entity.name   
+
+   def remove_pending_action(entity, action):
+      if hasattr(entity, "pending_actions"):
+         entity.pending_actions.remove(action)
+
+   def add_pending_action(entity, action):
+      if hasattr(entity, "pending_actions"):
+         entity.pending_actions.append(action)
+
+   def get_pending_actions(entity):
+      if hasattr(entity, "pending_actions"):
+         return entity.pending_actions
+      else:
+         return []
+
+   def clear_pending_actions(entity):
+      if hasattr(entity, "pending_actions"):
+         entity.pending_actions = []
+
+   def next_image(entity):
+      entity.current_img = (entity.current_img + 1) % len(entity.imgs)
+
+
 class Ore:
    def __init__(self, name, position, imgs, rate=5000):
       self.name = name
