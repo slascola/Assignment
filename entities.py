@@ -325,6 +325,9 @@ class Obstacle:
    def get_name(entity): 
       return entity.name  
 
+   def next_image(entity):
+      entity.current_img = (entity.current_img + 1) % len(entity.imgs)
+
 class OreBlob:
    def __init__(self, name, position, rate, imgs, animation_rate):
       self.name = name
@@ -334,6 +337,49 @@ class OreBlob:
       self.current_img = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
+
+   def set_position(entity, point):
+      entity.position = point
+
+   def get_position(entity):
+      return entity.position
+
+   def get_images(entity):
+      return entity.imgs
+
+   def get_image(entity):
+      return entity.imgs[entity.current_img]
+
+   def get_rate(entity):
+      return entity.rate        
+
+   def get_name(entity): 
+      return entity.name             
+
+   def get_animation_rate(entity):
+      return entity.animation_rate
+
+   def remove_pending_action(entity, action):
+      if hasattr(entity, "pending_actions"):
+         entity.pending_actions.remove(action)
+
+   def add_pending_action(entity, action):
+      if hasattr(entity, "pending_actions"):
+         entity.pending_actions.append(action)
+
+   def get_pending_actions(entity):
+      if hasattr(entity, "pending_actions"):
+         return entity.pending_actions
+      else:
+         return []
+
+   def clear_pending_actions(entity):
+      if hasattr(entity, "pending_actions"):
+         entity.pending_actions = []
+
+   def next_image(entity):
+      entity.current_img = (entity.current_img + 1) % len(entity.imgs)
+
 
 class Quake:
    def __init__(self, name, position, imgs, animation_rate):
