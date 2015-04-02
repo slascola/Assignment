@@ -310,6 +310,21 @@ class Obstacle:
       self.imgs = imgs
       self.current_img = 0
 
+   def set_position(entity, point):
+      entity.position = point
+
+   def get_position(entity):
+      return entity.position
+
+   def get_images(entity):
+      return entity.imgs
+
+   def get_image(entity):
+      return entity.imgs[entity.current_img]
+
+   def get_name(entity): 
+      return entity.name  
+
 class OreBlob:
    def __init__(self, name, position, rate, imgs, animation_rate):
       self.name = name
