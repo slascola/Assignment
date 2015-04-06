@@ -11,6 +11,10 @@ class Background:
    
    def get_image(self):
       return self.imgs[self.current_img]
+   def get_name(self):
+      return self.name
+   def next_image(self):
+      self.current_img = (self.current_img + 1) % len(self.imgs) 
 
 
 class MinerNotFull:
@@ -70,6 +74,11 @@ class MinerNotFull:
 
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
+
+   def entity_string(self):
+      return ' '.join(['miner', self.name, str(self.position.x),
+         str(self.position.y), str(self.resource_limit),
+         str(self.rate), str(self.animation_rate)])
 
 
 class MinerFull:
@@ -176,6 +185,11 @@ class Vein:
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
 
+   def entity_string(self):
+      return ' '.join(['vein', self.name, str(self.position.x),
+         str(self.position.y), str(self.rate),
+         str(self.resource_distance)])
+
 
 class Ore:
    def __init__(self, name, position, imgs, rate=5000):
@@ -218,6 +232,10 @@ class Ore:
 
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
+
+   def self_string(self):
+      return ' '.join(['ore', self.name, str(self.position.x),
+         str(self.position.y), str(self.rate)])
 
 
 class Blacksmith:
@@ -278,6 +296,11 @@ class Blacksmith:
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
 
+   def entity_string(self):
+      return ' '.join(['blacksmith', self.name, str(self.position.x),
+         str(self.position.y), str(self.resource_limit),
+         str(self.rate), str(self.resource_distance)])
+
 
 class Obstacle:
    def __init__(self, name, position, imgs):
@@ -303,6 +326,10 @@ class Obstacle:
 
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
+
+   def entity_string(self):
+      return ' '.join(['obstacle', self.name, str(self.position.x),
+         str(self.position.y)])
 
 class OreBlob:
    def __init__(self, name, position, rate, imgs, animation_rate):
@@ -454,25 +481,25 @@ class Quake:
 # This is a less than pleasant file format, but structured based on
 # material covered in course.  Something like JSON would be a
 # significant improvement.
-def self_string(self):
-   if isinstance(self, MinerNotFull):
-      return ' '.join(['miner', self.name, str(self.position.x),
-         str(self.position.y), str(self.resource_limit),
-         str(self.rate), str(self.animation_rate)])
-   elif isinstance(self, Vein):
-      return ' '.join(['vein', self.name, str(self.position.x),
-         str(self.position.y), str(self.rate),
-         str(self.resource_distance)])
-   elif isinstance(self, Ore):
-      return ' '.join(['ore', self.name, str(self.position.x),
-         str(self.position.y), str(self.rate)])
-   elif isinstance(self, Blacksmith):
-      return ' '.join(['blacksmith', self.name, str(self.position.x),
-         str(self.position.y), str(self.resource_limit),
-         str(self.rate), str(self.resource_distance)])
-   elif isinstance(self, Obstacle):
-      return ' '.join(['obstacle', self.name, str(self.position.x),
-         str(self.position.y)])
-   else:
-      return 'unknown'
+#def self_string(self):
+ #  if isinstance(self, MinerNotFull):
+  #    return ' '.join(['miner', self.name, str(self.position.x),
+   #      str(self.position.y), str(self.resource_limit),
+    #     str(self.rate), str(self.animation_rate)])
+   #elif isinstance(self, Vein):
+    #  return ' '.join(['vein', self.name, str(self.position.x),
+     #    str(self.position.y), str(self.rate),
+      #   str(self.resource_distance)])
+  # elif isinstance(self, Ore):
+   #   return ' '.join(['ore', self.name, str(self.position.x),
+    #     str(self.position.y), str(self.rate)])
+   #elif isinstance(self, Blacksmith):
+    #  return ' '.join(['blacksmith', self.name, str(self.position.x),
+     #    str(self.position.y), str(self.resource_limit),
+      #   str(self.rate), str(self.resource_distance)])
+   #elif isinstance(self, Obstacle):
+    #  return ' '.join(['obstacle', self.name, str(self.position.x),
+     #    str(self.position.y)])
+   #else:
+    #  return 'unknown'
 
