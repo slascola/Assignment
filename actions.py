@@ -221,7 +221,7 @@ def try_transform_miner_full(world, entity):
 
 
 def try_transform_miner_not_full(world, entity):
-   if entity.resource_count() < entity.resource_limit():
+   if entity.resource_count < entity.resource_limit:
       return entity
    else:
       new_entity = entities.MinerFull(
