@@ -52,14 +52,14 @@ class WorldModel:
       return tiles
 
    def remove_entity(self, entity):
-      remove_entity_at(self, entity.get_position())
+      self.remove_entity_at(entity.get_position())
 
-   def remove_entity_at(world, pt):
-      if (within_bounds(world, pt) and occ_grid.get_cell(world.occupancy, pt) != None):
-         entity = occ_grid.get_cell(world.occupancy, pt)
+   def remove_entity_at(self, pt):
+      if (self.within_bounds(pt) and occ_grid.get_cell(self.occupancy, pt) != None):
+         entity = occ_grid.get_cell(self.occupancy, pt)
          entity.set_position(point.Point(-1, -1))
-         world.entities.remove(entity)
-         occ_grid.set_cell(world.occupancy, pt, None)
+         self.entities.remove(entity)
+         occ_grid.set_cell(self.occupancy, pt, None)
 
 
    def schedule_action(self, action, time):
@@ -83,7 +83,7 @@ class WorldModel:
 
 
    def get_background_image(self, pt):
-      if within_bounds(self, pt):
+      if self.within_bounds(pt):
          cell = occ_grid.get_cell(self.background, pt)
          return cell.get_image()
 
