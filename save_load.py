@@ -58,7 +58,7 @@ def save_world(world, file):
 
 def save_entities(world, file):
    for entity in worldmodel.get_entities(world):
-      file.write(entity.entity_string + '\n')
+      file.write(entity.entity_string() + '\n')
 
 
 def save_background(world, file):
@@ -66,7 +66,7 @@ def save_background(world, file):
       for col in range(0, world.num_cols):
          background = worldmodel.get_background(world, point.Point(col, row))
          file.write('background ' +
-            background.get_name +
+            background.get_name() +
             ' ' + str(col) + ' ' + str(row) + '\n')
 
 
