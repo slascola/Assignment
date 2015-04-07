@@ -24,13 +24,13 @@ class WorldModel:
          occ_grid.get_cell(self.occupancy, pt) != None)
 
    def find_nearest(self, pt, type):
-      oftype = [(e, distance_sq(pt, e.get_position))
+      oftype = [(e, distance_sq(pt, e.get_position()))
          for e in self.entities if isinstance(e, type)]
 
       return nearest_entity(oftype)
 
    def add_entity(self, entity):
-      pt = entity.get_position
+      pt = entity.get_position()
       if self.within_bounds(pt):
          old_entity = occ_grid.get_cell(self.occupancy, pt)
          if old_entity != None:
@@ -42,7 +42,7 @@ class WorldModel:
    def move_entity(self, entity, pt):
       tiles = []
       if self.within_bounds(pt):
-         old_pt = entity.get_position
+         old_pt = entity.get_position()
          occ_grid.set_cell(self.occupancy, old_pt, None)
          tiles.append(old_pt)
          occ_grid.set_cell(self.occupancy, pt, entity)
@@ -52,7 +52,7 @@ class WorldModel:
       return tiles
 
    def remove_entity(self, entity):
-      remove_entity_at(self, entity.get_position)
+      remove_entity_at(self, entity.get_position())
 
    def remove_entity_at(world, pt):
       if (within_bounds(world, pt) and occ_grid.get_cell(world.occupancy, pt) != None):
@@ -85,7 +85,7 @@ class WorldModel:
    def get_background_image(self, pt):
       if within_bounds(self, pt):
          cell = occ_grid.get_cell(self.background, pt)
-         return cell.get_image
+         return cell.get_image()
 
 
    def get_background(self, pt):
