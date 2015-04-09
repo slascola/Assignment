@@ -652,6 +652,11 @@ class Quake:
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
 
+   def schedule_quake(self, world, ticks): #quake
+      actions.schedule_animation(self, world, actions.QUAKE_STEPS)
+      actions.schedule_action(self, world, actions.create_entity_death_action(self, world),
+         ticks + actions.QUAKE_DURATION)
+
 
 
 #def set_position(self, point):
