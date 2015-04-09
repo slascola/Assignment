@@ -88,7 +88,7 @@ class MinerNotFull:
       ore_pt = ore.get_position()
       if actions.adjacent(entity_pt, ore_pt):
          self.set_resource_count(1 + self.get_resource_count())
-         actions.remove_entity(world, ore)
+         actions.remove_entity(ore, world)
          return ([ore_pt], True)
       else:
          new_pt = actions.next_position(world, entity_pt, ore_pt)
@@ -391,6 +391,25 @@ class Ore:
       return ' '.join(['ore', self.name, str(self.position.x),
          str(self.position.y), str(self.rate)])
 
+   def create_ore_transform_action(self, world, i_store): #ore
+      def action(current_ticks):
+         self.remove_pending_action(action)
+         blob = actions.create_blob(world, self.get_name() + " -- blob",
+            self.get_position(),
+            self.get_rate() // actions.BLOB_RATE_SCALE,
+            current_ticks, i_store)
+
+         actions.remove_entity(self, world)
+         world.add_entity(blob)
+
+         return [blob.get_position()]
+      return action
+
+   def schedule_ore(self, world, ticks, i_store): #ore
+      actions.schedule_action(self, world,
+         self.create_ore_transform_action(world, i_store),
+         ticks + self.get_rate())
+
 
 class Blacksmith:
    def __init__(self, name, position, imgs, resource_limit, rate,
@@ -538,13 +557,13 @@ class OreBlob:
          return ([entity_pt], False)
       vein_pt = vein.get_position()
       if actions.adjacent(entity_pt, vein_pt):
-         actions.remove_entity(world, vein)
+         actions.remove_entity(vein, world)
          return ([vein_pt], True)
       else:
          new_pt = self.blob_next_position(world, entity_pt, vein_pt)
          old_entity = world.get_tile_occupant(new_pt)
          if isinstance(old_entity, Ore):
-            actions.remove_entity(world, old_entity)
+            actions.remove_entity(old_entity, world)
          return (world.move_entity(self,new_pt), False)
 
    def blob_next_position(self, world, entity_pt, dest_pt): #blobs with blob to vein
