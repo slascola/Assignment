@@ -366,7 +366,7 @@ def schedule_animation(entity, world, repeat_count=0): #function
       entity.get_animation_rate())
 
 
-def clear_pending_actions(entity, world): #function
-   for action in entity.get_pending_actions():
-      world.unschedule_action(action)
-   entity.clear_pending_actions()
+#def clear_pending_actions(entity, world): #function
+ #  for action in entity.get_pending_actions():
+  #    world.unschedule_action(action)
+   #entity.clear_pending_actions()
