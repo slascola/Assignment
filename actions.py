@@ -295,13 +295,13 @@ def remove_entity(entity, world): #function
    world.remove_entity(entity)
 
 
-def create_blob(world, name, pt, rate, ticks, i_store): #world?
-   blob = entities.OreBlob(name, pt, rate,
-      image_store.get_images(i_store, 'blob'),
-      random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
-      * BLOB_ANIMATION_RATE_SCALE)
-   blob.schedule_blob(world, ticks, i_store)
-   return blob
+#def create_blob(world, name, pt, rate, ticks, i_store): #world?
+ #  blob = entities.OreBlob(name, pt, rate,
+  #    image_store.get_images(i_store, 'blob'),
+   #   random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
+    #  * BLOB_ANIMATION_RATE_SCALE)
+   #blob.schedule_blob(world, ticks, i_store)
+   #return blob
 
 
 #def schedule_blob(world, blob, ticks, i_store):
@@ -316,12 +316,12 @@ def create_blob(world, name, pt, rate, ticks, i_store): #world?
    #schedule_animation(miner, world)
 
 
-def create_ore(world, name, pt, ticks, i_store): #world?
-   ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
-      random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
-   ore.schedule_ore(world, ticks, i_store)
+#def create_ore(world, name, pt, ticks, i_store): #world?
+ #  ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
+  #    random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
+   #ore.schedule_ore(world, ticks, i_store)
 
-   return ore
+   #return ore
 
 
 #def schedule_ore(world, ore, ticks, i_store): #ore
@@ -330,11 +330,11 @@ def create_ore(world, name, pt, ticks, i_store): #world?
    #   ticks + ore.get_rate())
 
 
-def create_quake(world, pt, ticks, i_store): #world?
-   quake = entities.Quake("quake", pt,
-      image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
-   quake.schedule_quake(world, ticks)
-   return quake
+#def create_quake(world, pt, ticks, i_store): #world?
+ #  quake = entities.Quake("quake", pt,
+  #    image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
+   #quake.schedule_quake(world, ticks)
+   #return quake
 
 
 #def schedule_quake(world, quake, ticks): #quake
@@ -343,11 +343,11 @@ def create_quake(world, pt, ticks, i_store): #world?
    #   ticks + QUAKE_DURATION)
 
 
-def create_vein(world, name, pt, ticks, i_store): #world?
-   vein = entities.Vein("vein" + name,
-      random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX),
-      pt, image_store.get_images(i_store, 'vein'))
-   return vein
+#def create_vein(world, name, pt, ticks, i_store): #world?
+ #  vein = entities.Vein("vein" + name,
+  #    random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX),
+   #   pt, image_store.get_images(i_store, 'vein'))
+   #return vein
 
 
 #def schedule_vein(world, vein, ticks, i_store): #vein
