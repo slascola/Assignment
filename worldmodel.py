@@ -6,6 +6,7 @@ import occ_grid
 import point
 import image_store
 import random
+import save_load
 
 class WorldModel:
    def __init__(self, num_rows, num_cols, background):
@@ -136,6 +137,7 @@ class WorldModel:
          random.randint(actions.VEIN_RATE_MIN, actions.VEIN_RATE_MAX),
          pt, image_store.get_images(i_store, 'vein'))
       return vein
+
 
    
 
