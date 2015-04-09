@@ -127,7 +127,7 @@ class MinerNotFull:
    def try_transform_miner(self, world, transform): #function or both classes
       new_entity = transform(world)
       if self != new_entity:
-         actions.clear_pending_actions(self, world)
+         self.clear_pending_actions_new(world)
          world.remove_entity_at(self.get_position())
          world.add_entity(new_entity)
          actions.schedule_animation(new_entity, world)
@@ -145,6 +145,10 @@ class MinerNotFull:
          ticks + self.get_rate())
       actions.schedule_animation(self, world)
 
+   def clear_pending_actions_new(self, world): #function
+      for action in self.get_pending_actions():
+         world.unschedule_action(action)
+      self.clear_pending_actions()
 
 class MinerFull:
    def __init__(self, name, resource_limit, position, rate, imgs,
@@ -249,7 +253,7 @@ class MinerFull:
    def try_transform_miner(self, world, transform): #function or both classes
       new_entity = transform(world)
       if self != new_entity:
-         actions.clear_pending_actions(self, world)
+         self.clear_pending_actions_new(world)
          world.remove_entity_at(self.get_position())
          world.add_entity(new_entity)
          actions.schedule_animation(new_entity, world)
@@ -267,6 +271,11 @@ class MinerFull:
       actions.schedule_action(self, world, self.create_miner_action(world, i_store),
          ticks + self.get_rate())
       actions.schedule_animation(self, world)
+
+   def clear_pending_actions_new(self, world): #function
+      for action in self.get_pending_actions():
+         world.unschedule_action(action)
+      self.clear_pending_actions()
 
 
 class Vein:
