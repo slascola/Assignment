@@ -81,6 +81,69 @@ class MinerNotFull:
          str(self.position.y), str(self.resource_limit),
          str(self.rate), str(self.animation_rate)])
 
+   def miner_to_ore(self, world, ore): #not full class
+      entity_pt = self.get_position()
+      if not ore:
+         return ([entity_pt], False)
+      ore_pt = ore.get_position()
+      if actions.adjacent(entity_pt, ore_pt):
+         self.set_resource_count(1 + self.get_resource_count())
+         actions.remove_entity(world, ore)
+         return ([ore_pt], True)
+      else:
+         new_pt = actions.next_position(world, entity_pt, ore_pt)
+         return (world.move_entity(self, new_pt), False)
+
+   def create_miner_not_full_action(self, world, i_store):
+      def action(current_ticks):
+         self.remove_pending_action(action)
+
+         entity_pt = self.get_position()
+         ore = world.find_nearest(entity_pt, Ore)
+         (tiles, found) = self.miner_to_ore(world, ore)
+
+         new_entity = self
+         if found:
+            new_entity = self.try_transform_miner(world,
+               self.try_transform_miner_not_full)
+
+         actions.schedule_action(new_entity, world,
+            new_entity.create_miner_action(world, i_store),
+            current_ticks + new_entity.get_rate())
+         return tiles
+      return action
+
+   def try_transform_miner_not_full(self, world):
+      if self.resource_count < self.resource_limit:
+         return self
+      else:
+         new_entity = MinerFull(
+            self.get_name(), self.get_resource_limit(),
+            self.get_position(), self.get_rate(),
+            self.get_images(), self.get_animation_rate())
+         return new_entity
+
+   def try_transform_miner(self, world, transform): #function or both classes
+      new_entity = transform(world)
+      if self != new_entity:
+         actions.clear_pending_actions(self, world)
+         world.remove_entity_at(self.get_position())
+         world.add_entity(new_entity)
+         actions.schedule_animation(new_entity, world)
+
+      return new_entity
+
+   def create_miner_action(self, world, image_store): #both
+      if isinstance(self, MinerNotFull):
+         return self.create_miner_not_full_action(world, image_store)
+      #else:
+       #  return self.create_miner_full_action(world, image_store)
+
+   def schedule_miner(self, world, ticks, i_store): #both
+      actions.schedule_action(self, world, self.create_miner_action(world, i_store),
+         ticks + self.get_rate())
+      actions.schedule_animation(self, world)
+
 
 class MinerFull:
    def __init__(self, name, resource_limit, position, rate, imgs,
@@ -139,6 +202,71 @@ class MinerFull:
 
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
+
+   def miner_to_smith(self, world, smith): #full class
+      entity_pt = self.get_position()
+      if not smith:
+         return ([entity_pt], False)
+      smith_pt = smith.get_position()
+      if actions.adjacent(entity_pt, smith_pt):
+         smith.set_resource_count(
+            smith.get_resource_count() +
+            self.get_resource_count())
+         self.set_resource_count(0)
+         return ([], True)
+      else:
+         new_pt = actions.next_position(world, entity_pt, smith_pt)
+         return (world.move_entity(self, new_pt), False)
+
+   def create_miner_full_action(self, world, i_store): #miner full class
+      def action(current_ticks):
+         self.remove_pending_action(action)
+
+         entity_pt = self.get_position()
+         smith = world.find_nearest(entity_pt, Blacksmith)
+         (tiles, found) = self.miner_to_smith(world, smith)
+
+         new_entity = self
+         if found:
+            new_entity = self.try_transform_miner(world,
+               self.try_transform_miner_full)
+
+         actions.schedule_action(new_entity, world,
+            new_entity.create_miner_action(world, i_store),
+            current_ticks + new_entity.get_rate())
+         return tiles
+      return action
+
+   def try_transform_miner_full(self, world): #miner full class
+      new_entity = MinerNotFull(
+         self.get_name(), self.get_resource_limit(),
+         self.get_position(), self.get_rate(),
+         self.get_images(), self.get_animation_rate())
+
+      return new_entity
+
+   def try_transform_miner(self, world, transform): #function or both classes
+      new_entity = transform(world)
+      if self != new_entity:
+         actions.clear_pending_actions(self, world)
+         world.remove_entity_at(self.get_position())
+         world.add_entity(new_entity)
+         actions.schedule_animation(new_entity, world)
+
+      return new_entity
+
+
+   def create_miner_action(self, world, image_store): #both
+      if isinstance(self, MinerNotFull):
+         return self.create_miner_not_full_action(world, image_store)
+      else:
+         return self.create_miner_full_action(world, image_store)
+
+   def schedule_miner(self, world, ticks, i_store): #both
+      actions.schedule_action(self, world, self.create_miner_action(world, i_store),
+         ticks + self.get_rate())
+      actions.schedule_animation(self, world)
+
 
 class Vein:
    def __init__(self, name, rate, position, imgs, resource_distance=1):
