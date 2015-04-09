@@ -1,5 +1,6 @@
 import point
 import actions
+import worldmodel
 
 class Background:
    def __init__(self, name, imgs):
@@ -326,7 +327,7 @@ class Vein:
          open_pt = actions.find_open_around(world, self.get_position(),
             self.get_resource_distance())
          if open_pt:
-            ore = actions.create_ore(world,
+            ore = world.create_ore(
                "ore - " + self.get_name() + " - " + str(current_ticks),
                open_pt, current_ticks, i_store)
             world.add_entity(ore)
@@ -394,7 +395,7 @@ class Ore:
    def create_ore_transform_action(self, world, i_store): #ore
       def action(current_ticks):
          self.remove_pending_action(action)
-         blob = actions.create_blob(world, self.get_name() + " -- blob",
+         blob = world.create_blob(self.get_name() + " -- blob",
             self.get_position(),
             self.get_rate() // actions.BLOB_RATE_SCALE,
             current_ticks, i_store)
@@ -593,7 +594,7 @@ class OreBlob:
 
          next_time = current_ticks + self.get_rate()
          if found:
-            quake = actions.create_quake(world, tiles[0], current_ticks, i_store)
+            quake = world.create_quake(tiles[0], current_ticks, i_store)
             world.add_entity(quake)
             next_time = current_ticks + self.get_rate() * 2
 
