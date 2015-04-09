@@ -264,13 +264,13 @@ def create_animation_action(world, entity, repeat_count): #function
    return action
 
 
-def create_entity_death_action(entity, world): #function?
-   def action(current_ticks):
-      entity.remove_pending_action(action)
-      pt = entity.get_position()
-      remove_entity(entity, world)
-      return [pt]
-   return action
+#def create_entity_death_action(entity, world): #function?
+ #  def action(current_ticks):
+  #    entity.remove_pending_action(action)
+   #   pt = entity.get_position()
+    #  remove_entity(entity, world)
+     # return [pt]
+   #return action
 
 
 #def create_ore_transform_action(world, entity, i_store): #ore
