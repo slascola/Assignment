@@ -264,7 +264,7 @@ def create_animation_action(world, entity, repeat_count): #function
    return action
 
 
-def create_entity_death_action(world, entity): #function?
+def create_entity_death_action(entity, world): #function?
    def action(current_ticks):
       entity.remove_pending_action(action)
       pt = entity.get_position()
@@ -288,7 +288,7 @@ def create_entity_death_action(world, entity): #function?
    #return action
 
 
-def remove_entity(entity, world): #world?
+def remove_entity(entity, world): #function
    for action in entity.get_pending_actions():
       world.unschedule_action(action)
    entity.clear_pending_actions()
@@ -333,14 +333,14 @@ def create_ore(world, name, pt, ticks, i_store): #world?
 def create_quake(world, pt, ticks, i_store): #world?
    quake = entities.Quake("quake", pt,
       image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
-   schedule_quake(world, quake, ticks)
+   quake.schedule_quake(world, ticks)
    return quake
 
 
-def schedule_quake(world, quake, ticks): #quake
-   schedule_animation(quake, world, QUAKE_STEPS)
-   schedule_action(quake, world, create_entity_death_action(world, quake),
-      ticks + QUAKE_DURATION)
+#def schedule_quake(world, quake, ticks): #quake
+ #  schedule_animation(quake, world, QUAKE_STEPS)
+  # schedule_action(quake, world, create_entity_death_action(world, quake),
+   #   ticks + QUAKE_DURATION)
 
 
 def create_vein(world, name, pt, ticks, i_store): #world?
