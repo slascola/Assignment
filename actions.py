@@ -189,26 +189,26 @@ def find_open_around(world, pt, distance):
    return None
 
 
-def create_vein_action(world, entity, i_store): #vein
-   def action(current_ticks):
-      entity.remove_pending_action(action)
+#def create_vein_action(world, entity, i_store): #vein
+ #  def action(current_ticks):
+  #    entity.remove_pending_action(action)
 
-      open_pt = find_open_around(world, entity.get_position(),
-         entity.get_resource_distance())
-      if open_pt:
-         ore = create_ore(world,
-            "ore - " + entity.get_name() + " - " + str(current_ticks),
-            open_pt, current_ticks, i_store)
-         world.add_entity(ore)
-         tiles = [open_pt]
-      else:
-         tiles = []
+#      open_pt = find_open_around(world, entity.get_position(),
+ #        entity.get_resource_distance())
+  #    if open_pt:
+   #      ore = create_ore(world,
+    #        "ore - " + entity.get_name() + " - " + str(current_ticks),
+     #       open_pt, current_ticks, i_store)
+      #   world.add_entity(ore)
+       #  tiles = [open_pt]
+      #else:
+       #  tiles = []
 
-      schedule_action(entity, world,
-         create_vein_action(world, entity, i_store),
-         current_ticks + entity.get_rate())
-      return tiles
-   return action
+#      schedule_action(entity, world,
+ #        create_vein_action(world, entity, i_store),
+  #       current_ticks + entity.get_rate())
+   #   return tiles
+   #return action
 
 
 #def try_transform_miner_full(world, entity): #miner full class
@@ -273,7 +273,7 @@ def create_entity_death_action(world, entity):
    return action
 
 
-def create_ore_transform_action(world, entity, i_store):
+def create_ore_transform_action(world, entity, i_store): #ore
    def action(current_ticks):
       entity.remove_pending_action(action)
       blob = create_blob(world, entity.get_name() + " -- blob",
@@ -324,7 +324,7 @@ def create_ore(world, name, pt, ticks, i_store):
    return ore
 
 
-def schedule_ore(world, ore, ticks, i_store):
+def schedule_ore(world, ore, ticks, i_store): #ore
    schedule_action(ore, world,
       create_ore_transform_action(world, ore, i_store),
       ticks + ore.get_rate())
@@ -337,7 +337,7 @@ def create_quake(world, pt, ticks, i_store):
    return quake
 
 
-def schedule_quake(world, quake, ticks):
+def schedule_quake(world, quake, ticks): #ore
    schedule_animation(quake, world, QUAKE_STEPS)
    schedule_action(quake, world, create_entity_death_action(world, quake),
       ticks + QUAKE_DURATION)
@@ -350,9 +350,9 @@ def create_vein(world, name, pt, ticks, i_store):
    return vein
 
 
-def schedule_vein(world, vein, ticks, i_store):
-   schedule_action(vein, world, create_vein_action(world, vein, i_store),
-      ticks + vein.get_rate())
+#def schedule_vein(world, vein, ticks, i_store): #vein
+ #  schedule_action(vein, world, create_vein_action(world, vein, i_store),
+  #    ticks + vein.get_rate())
 
 
 def schedule_action(entity, world, action, time):
