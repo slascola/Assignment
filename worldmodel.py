@@ -110,13 +110,6 @@ class WorldModel:
       return self.entities
 
 
-
-
-
-
-
-
-
    def create_vein(self, name, pt, ticks, i_store): #world?
       vein = entities.Vein("vein" + name,
          random.randint(actions.VEIN_RATE_MIN, actions.VEIN_RATE_MAX),
