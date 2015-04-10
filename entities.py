@@ -406,7 +406,7 @@ class Ore:
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)
 
-   def self_string(self):
+   def entity_string(self):
       return ' '.join(['ore', self.name, str(self.position.x),
          str(self.position.y), str(self.rate)])
 
