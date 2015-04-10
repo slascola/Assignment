@@ -52,16 +52,16 @@ VEIN_ROW = 3
 VEIN_REACH = 5
 
 
-def save_world(world, file): #function acting on the world
+def save_world(world, file):
    save_entities(world, file)
    save_background(world, file)
 
-def save_entities(world, file): #function acting on the world
+def save_entities(world, file):
    for entity in world.get_entities():
       file.write(entity.entity_string() + '\n')
 
 
-def save_background(world, file): #function acting on world
+def save_background(world, file):
    for row in range(0, world.num_rows):
       for col in range(0, world.num_cols):
          background = world.get_background(point.Point(col, row))
@@ -70,7 +70,7 @@ def save_background(world, file): #function acting on world
             ' ' + str(col) + ' ' + str(row) + '\n')
 
 
-def load_world(world, images, file, run=False): #function acting on world world can load world righhtttt thats just nutty
+def load_world(world, images, file, run=False):
    for line in file:
       properties = line.split()
       if properties:
@@ -80,7 +80,7 @@ def load_world(world, images, file, run=False): #function acting on world world 
             add_entity(world, properties, images, run)
 
 
-def add_background(world, properties, i_store): #worldmodel
+def add_background(world, properties, i_store):
    if len(properties) >= BGND_NUM_PROPERTIES:
       pt = point.Point(int(properties[BGND_COL]), int(properties[BGND_ROW]))
       name = properties[BGND_NAME]
@@ -88,7 +88,7 @@ def add_background(world, properties, i_store): #worldmodel
          entities.Background(name, image_store.get_images(i_store, name)))
 
 
-def add_entity(world, properties, i_store, run): #world model
+def add_entity(world, properties, i_store, run):
    new_entity = create_from_properties(properties, i_store)
    if new_entity:
       world.add_entity(new_entity)
