@@ -1,6 +1,8 @@
 import point
 import actions
 import worldmodel
+import image_store
+import random
 
 class Background:
    def __init__(self, name, imgs):
@@ -336,7 +338,7 @@ class Vein:
          open_pt = actions.find_open_around(world, self.get_position(),
             self.get_resource_distance())
          if open_pt:
-            ore = world.create_ore(
+            ore = self.create_ore(world,
                "ore - " + self.get_name() + " - " + str(current_ticks),
                open_pt, current_ticks, i_store)
             world.add_entity(ore)
@@ -353,6 +355,13 @@ class Vein:
    def schedule_vein(self, world, ticks, i_store): #vein
       actions.schedule_action(self, world, self.create_vein_action(world, i_store),
          ticks + self.get_rate())
+
+   def create_ore(self, world, name, pt, ticks, i_store): #world?
+      ore = Ore(name, pt, image_store.get_images(i_store, 'ore'),
+         random.randint(actions.ORE_CORRUPT_MIN, actions.ORE_CORRUPT_MAX))
+      ore.schedule_ore(world, ticks, i_store)
+
+      return ore
 
 
 class Ore:
@@ -404,7 +413,7 @@ class Ore:
    def create_ore_transform_action(self, world, i_store): #ore
       def action(current_ticks):
          self.remove_pending_action(action)
-         blob = world.create_blob(self.get_name() + " -- blob",
+         blob = self.create_blob(world, self.get_name() + " -- blob",
             self.get_position(),
             self.get_rate() // actions.BLOB_RATE_SCALE,
             current_ticks, i_store)
@@ -419,6 +428,14 @@ class Ore:
       actions.schedule_action(self, world,
          self.create_ore_transform_action(world, i_store),
          ticks + self.get_rate())
+
+   def create_blob(self, world, name, pt, rate, ticks, i_store):
+      blob = OreBlob(name, pt, rate,
+         image_store.get_images(i_store, 'blob'),
+         random.randint(actions.BLOB_ANIMATION_MIN, actions.BLOB_ANIMATION_MAX)
+         * actions.BLOB_ANIMATION_RATE_SCALE)
+      blob.schedule_blob(world, ticks, i_store)
+      return blob
 
 
 class Blacksmith:
@@ -570,28 +587,12 @@ class OreBlob:
          actions.remove_entity(vein, world)
          return ([vein_pt], True)
       else:
-         new_pt = self.blob_next_position(world, entity_pt, vein_pt)
+         new_pt = actions.blob_next_position(world, entity_pt, vein_pt)
          old_entity = world.get_tile_occupant(new_pt)
          if isinstance(old_entity, Ore):
             actions.remove_entity(old_entity, world)
          return (world.move_entity(self,new_pt), False)
 
-   def blob_next_position(self, world, entity_pt, dest_pt): #blobs with blob to vein
-      horiz = actions.sign(dest_pt.x - entity_pt.x)
-      new_pt = point.Point(entity_pt.x + horiz, entity_pt.y)
-
-      if horiz == 0 or (world.is_occupied(new_pt) and
-         not isinstance(world.get_tile_occupant(new_pt),
-         Ore)):
-         vert = actions.sign(dest_pt.y - entity_pt.y)
-         new_pt = point.Point(entity_pt.x, entity_pt.y + vert)
-
-         if vert == 0 or (world.is_occupied(new_pt) and
-            not isinstance(world.get_tile_occupant(new_pt),
-            Ore)):
-            new_pt = point.Point(entity_pt.x, entity_pt.y)
-
-      return new_pt
 
    def create_ore_blob_action(self, world, i_store): #oreblob class
       def action(current_ticks):
@@ -603,7 +604,7 @@ class OreBlob:
 
          next_time = current_ticks + self.get_rate()
          if found:
-            quake = world.create_quake(tiles[0], current_ticks, i_store)
+            quake = self.create_quake(world, tiles[0], current_ticks, i_store)
             world.add_entity(quake)
             next_time = current_ticks + self.get_rate() * 2
 
@@ -618,6 +619,12 @@ class OreBlob:
       actions.schedule_action(self,world, self.create_ore_blob_action(world, i_store),
          ticks + self.get_rate())
       actions.schedule_animation(self, world)
+
+   def create_quake(self, world, pt, ticks, i_store): #world?
+      quake = Quake("quake", pt,
+         image_store.get_images(i_store, 'quake'), actions.QUAKE_ANIMATION_RATE)
+      quake.schedule_quake(world, ticks)
+      return quake
 
 
 class Quake:
