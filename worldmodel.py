@@ -109,28 +109,13 @@ class WorldModel:
    def get_entities(self):
       return self.entities
 
-   def create_blob(self, name, pt, rate, ticks, i_store): #world?
-      blob = entities.OreBlob(name, pt, rate,
-         image_store.get_images(i_store, 'blob'),
-         random.randint(actions.BLOB_ANIMATION_MIN, actions.BLOB_ANIMATION_MAX)
-         * actions.BLOB_ANIMATION_RATE_SCALE)
-      blob.schedule_blob(self, ticks, i_store)
-      return blob
 
 
-   def create_ore(self, name, pt, ticks, i_store): #world?
-      ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
-         random.randint(actions.ORE_CORRUPT_MIN, actions.ORE_CORRUPT_MAX))
-      ore.schedule_ore(self, ticks, i_store)
-
-      return ore
 
 
-   def create_quake(self, pt, ticks, i_store): #world?
-      quake = entities.Quake("quake", pt,
-         image_store.get_images(i_store, 'quake'), actions.QUAKE_ANIMATION_RATE)
-      quake.schedule_quake(self, ticks)
-      return quake
+
+
+
 
    def create_vein(self, name, pt, ticks, i_store): #world?
       vein = entities.Vein("vein" + name,
