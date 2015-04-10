@@ -102,7 +102,7 @@ class WorldView:
    def update_mouse_cursor(self):
       return self.update_tile(self.mouse_pt,
          self.create_mouse_surface(
-            self.world.is_occupied(
+            worldmodel.is_occupied(self.world,
                viewport_to_world(self.viewport, self.mouse_pt))))
 
 
