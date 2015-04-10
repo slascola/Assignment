@@ -22,9 +22,9 @@ class WorldModel:
          pt.y >= 0 and pt.y < self.num_rows)
 
 
-   def is_occupied(self, pt):
-      return (self.within_bounds(pt) and
-         self.occupancy.get_cell(pt) != None)
+   #def is_occupied(self, pt):
+    #  return (self.within_bounds(pt) and
+     #    self.occupancy.get_cell(pt) != None)
 
    def find_nearest(self, pt, type):
       oftype = [(e, distance_sq(pt, e.get_position()))
@@ -124,9 +124,9 @@ class WorldModel:
   #    pt.y >= 0 and pt.y < world.num_rows)
 
 
-#def is_occupied(world, pt):
- #  return (within_bounds(world, pt) and
-  #    occ_grid.get_cell(world.occupancy, pt) != None)
+def is_occupied(world, pt):
+   return (world.within_bounds(pt) and
+      world.occupancy.get_cell(pt) != None)
 
 
 def nearest_entity(entity_dists):
