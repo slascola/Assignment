@@ -1,0 +1,402 @@
+﻿Stephanie Lascola
+Kayla Lake
+CPE-102
+Keen
+Functions Not in Classes
+
+
+Actions.py
+
+
+Sign(x): This function only has the parameter x, and it is used to find if the position is negative, positive or zero and therefore the general function can be left on its own.
+
+
+Adjacent(pt1, pt2): Adjacent utilizes the points and checks if there is anything in the spot next to it. Since there is nothing directly performing this action it can left as a function.
+
+
+Next_position(world, entity_pt, dest_pt): Next position checks if the adjacent side is open for an entity to move. The world is not performing the function as it is only a check.
+
+
+Blob_next_position(world, entity_pt, dest_pt): This function only returns the blob’s position not an actual blob object. We decided to leave it as a function because it works on the position points in the world instead of a specific entity.  
+
+
+Find_open_around(world, pt, distance): This function finds what area is open and returns a point if there is an open space. If not, it returns None. Because this is another check within the world and not the world acting, it remains as a function on its own.
+
+
+Create_animation_action(world, entity, repeat_count): Creating the animation for the sprites is not a specific action that can be categorized into a class. Because it finds the next image for each entity and the world is not creating the image change, it is best to be a function
+
+
+Remove_entity(entity, world): Removing entity involves MinerNotFull, Ore, and OreBlob. Because it doesn’t focus on one entity nor does the world remove the entity, it can be a function on its own.
+
+
+Schedule_action(entity, world, action, time): This function is connected to both functions in actions.py as well as six classes within entities.py. Because it is universally used, it is not directly correlated to any one class and to make the code more efficient it should be left as a function. 
+
+
+Schedule_animation(entity, world, repeat_count =0): Similarly to schedule_action, it affects multiple classes within entities and therefore cannot be classified into one. The world is not completely the action of animation and neither is one single entity. In addition, leaving this as a function reduces coupling.
+
+
+Worldmodel.py
+
+
+Is_occupied(world, pt): The world is not performing the action is_occupied. Instead, the world is only checking if there is a spot open. To avoid coupling, it can be left as its own function as it is used in multiple functions and files.
+
+
+Nearest_entity(entity_dists): nearest entity is used strictly within the worldmodel.py class and compares the distances between two entities in order to determine which one is nearest. This function is not specific to the World class and therefore we decided to leave it out.
+
+
+Distance_sq(p1, p2): This function finds the distance between points. It is a general function that is not specific to any of the classes and therefore can stand alone.
+
+
+Save_load.py
+
+
+Save_world(world, file): This function only performs operations on the input file and not on any specific classes.
+Save_entities(world, file): This function only performs operations on the input file and not on any specific classes.
+
+
+Save_background(world, file): This function performs operations on the input file and only calls on the background and world entity, rather than perform functions on the attributes of the entities themselves and therefore does not fit into that class.
+
+
+Load_world(world, images, file, run=False): This function is used in the input file format and  writes entities to a file, it does not fit logically into any class.
+
+
+Add_background(world, properties, i_store): This function is used in the input file format and  writes properties of the entity to a file, it does not fit logically into any class.
+
+
+Add_entity(world, properties, i_store, run): This function is used in the input file format and  adds properties of the entity to the file, it does not fit logically into any class.
+
+
+Create_from_properties(properties, i_store): This function is performed on the input file and creates specified entities in the file, it does not fit logically into any class.
+
+
+Create_miner(properties, i_store): This function is used for the game setup and creates a miner entity when the file specifies to do so, it does not fit logically into any class
+
+
+Create_vein(properties, i_store): This function is used for the game setup and creates a vein entity when the file specifies to do so, it does not fit logically into any class
+
+
+Create_ore(properties, i_store): This function is used for the game setup and creates an ore entity when the file specifies to do so, it does not fit logically into any class
+
+
+Create_blacksmith(properties, i_store): This function is used for the game setup and creates blacksmith entity when the file specifies to do so, it does not fit logically into any class
+
+
+Create_obstacle(properties, i_store): This function is used for the game setup and creates an obstacle entity when the file specifies to do so, it does not fit logically into any class
+
+
+Schedule_entity(world, entity, i_store): This function is used for the game setup and schedules the creation of entities when the file specifies to do so, it does not fit logically into any class.
+
+
+
+
+
+
+WorldView.py
+
+
+Viewport_to_world(viewport, pt): The following function performs operations on the viewport parameter of world and is called many times by methods already in the WorldView class and is therefore capable of standing alone. 
+
+
+World_to_viewport(viewport, pt): The following function performs operations on the viewport parameter of world and is called many times by methods already in the WorldView class. It is capable of standing alone.
+
+
+Clamp(v, low, high): Is a general function that performs operations on the positions of the viewport parameter of WorldView. It is called in the create_shifted_view_port function and is not associated with any classes and can therefore stand alone.
+
+
+Create_shifted_viewport(viewport, delta, num_rows, num_cols): creates a new viewport. This function performs operations on only the viewport parameter of a WorldView class. We decided to leave it outside the Worldview class as ‘viewport’ is a separate object defined elsewhere.
+
+
+Builder.py
+Create_default_background(img): Creating the default background is part of the game set up and therefore is not associated with any class.
+
+
+Main():  Main is the main function of the entire game and therefore is not associated with any class.
+
+
+Builder_controller.py
+Mouse_to_tile(pos, tile_width, tile_height): This function is associated with user interaction for the entire game, therefore it is not appropriate to assign it to any one class.
+
+
+Save_world(world, filename): This function saves the world, it is not associated with any class as it performs an operation on the entire program
+
+
+Load_world(world, i_store, filename): This function loads the world, it is not associated with any class as it performs an operation on the entire program.
+
+
+On_keydown(event, world, entity_select, i_store):  This function is associated with user interaction for the entire game, therefore it is not appropriate to assign it to any one class.
+
+
+
+
+Handle_mouse_motion(view, event):  This function is associated with user interaction for the entire game, therefore it is not appropriate to assign it to any one class.
+
+
+Handle_keydown(view, event, i_store, world, entity_select):  This function is associated with user interaction for the entire game, therefore it is not appropriate to assign it to any one class.
+
+
+Create_new_entity(pt, entity_select, i_store): This function searches to find which entity to place where and deals with the game set up and therefore does not fit into any classes since it is not acting on any of them.
+
+
+Is_background_tile(entity_select): This function deals with the default appearance of the game and therefore can not be logically assigned to any one class
+
+
+Handle_mouse_button(view, world, event, entity_select, i_store):  This function is associated with user interaction for the entire game, therefore it is not appropriate to assign it to any one class.
+
+
+Activity_loop(view, world, i_store): This function is part of the game set up and therefore is not associated with any class.
+
+
+Controller.py
+On_keydown(event): This function is part of the set up for pygame and since it does not fit into any of the classes it can be left as a function.
+
+
+Mouse_to_tile(pos, tile_width, tile_height): This function is associated with user interaction for the entire game, therefore it is not appropriate to assign it to any one class.
+
+
+Handle_timer_event(world, view): This functions incorporates time. Because it is part of the pygame initializer, and does not fit into any class it can be a function on its own. 
+
+
+Handle_mouse_motion(view, event): This function deals with the mouse movement and points in the world. It is a user interaction with the simulation and because it has no direct class association, it can be a function.
+
+
+Handle_keydown(view, event): Handling keydown refers to the previous function of keydown which also refers to the set-up of pygame. There is no logical class where this function fits.
+
+
+Activity_loop(view, world); This function deals with the start of pygame and it has no logical class where it fits. 
+
+
+Image_store.py
+create_default_image(tile_width, tile_height): This function creates the initial image for the program and is part of pygame setup, therefore it does not fit logically into any class.
+
+
+load_images(filename, tile_width, tile_height): This function attempts to load images and if it is incapable reverts to the default image. This function is part of pygame setup, therefore it does not fit logically into any class.
+
+
+process_image_line(images, line): This function deals with the processing  images for the game set up, it does not fit logically into any class.
+
+
+get_images_internal(images, key): This function deals with the retrieval of images for the game set up, it does not fit logically into any class.
+
+
+get_images(images, key): This function deals with the retrieval of images and default images for the game set up, it does not fit logically into any class.
+
+
+
+
+Main.py
+Create_default_background(img): This function creates a background for the world. However, world is not directly performing and therefore does not belong in the world class. There is no logical class for this function and it is part of the initial set-up of the simulation. 
+
+
+Load_world(world, i_store, filename): Loading the world involves a file and therefore the world is not directly performing this action. This is part of the start of the simulation which is best left alone as a function. 
+
+
+
+
+
+
+Functions in Classes
+Entities.py
+Background:
+get_images
+get_image
+get_name
+next_image
+
+
+
+
+MinerNotFull:
+set_position
+get_position
+get_images
+get_image
+get_rate
+set_resource_count
+get_resource_count
+get_resource_limit
+get_name
+get_animation_rate
+remove_pending_actions
+add_pending_action
+get_pending_actions
+clear_pending_actions
+next_image
+entity_string
+miner_to_ore
+create_miner_not_full_action
+try_transform_miner_not_full
+try_transform_miner
+create_miner_action
+schedule_miner
+clear_pending_actions_new
+
+
+MinerFull:
+set_position
+get_position
+get_images
+get_image
+get_rate
+set_resource_count
+get_resource_count
+get_resource_limit
+get_name
+get_animation_rate
+remove_pending_action
+add_pending_action
+get_pending_actions
+clear_pending_actions
+next_image
+miner_to_smith
+create_miner_full_action
+try_transform_miner_full
+try_transform_miner
+create_miner_action
+schedule_miner
+clear_pending_actions_new
+
+
+Vein:
+set_position
+get_position
+get_images
+get_image
+get_rate
+get_resource_distance
+get_name
+remove_pending_action
+add_pending_action
+get_pending_actions
+clear_pending_actions
+next_image
+entity_string
+create_vein_action
+schedule_vein
+create_ore
+
+
+Ore:
+set_position
+get_position
+get_images
+get_image
+get_rate
+get_name
+remove_pending_action
+add_pending_action
+get_pending_actions
+clear_pending_actions
+next_image
+entity_string
+create_ore_transform_action
+schedule_ore
+create_blob
+
+
+Blacksmith:
+set_position
+get_position
+get_images
+get_image
+get_rate
+set_resource_count
+get_resource_count
+get_resource_limit
+get_resource_distance
+get_name
+remove_pending_action
+add_pending_action
+get_pending_actions
+clear_pending_actions
+next_image
+entity_string
+
+
+
+
+Obstacle:
+set_position
+get_position
+get_images
+get_image
+get_name
+next_image
+entity_string
+
+
+OreBlob:
+set_position
+get_position
+get_images
+get_image
+get_rate
+get_name
+get_animation_rate
+remove_pending_action
+add_pending_action
+get_pending_actions
+clear_pending_actions
+next_image
+blob_to_vein
+create_ore_blob_action
+schedule_blob
+create_quake
+
+
+Quake:
+set_position
+get_position
+get_images
+get_image
+get_name
+get_animation_rate
+remove_pending_action
+add_pending_action
+get_pending_actions
+clear_pending_actions
+next_image
+schedule_quake
+create_entity_death_action
+
+
+Occ_grid.py
+Grid:
+set_cell
+get_cell
+
+
+
+
+
+
+Worldmodel.py
+WorldModel:
+within_bounds
+find_nearest
+add_entity
+move_entity
+remove_entity
+remove_entity_at
+schedule_action
+unschedule_action
+update_on_time
+get_background_image
+get_background
+set_background
+get_tile_occupant
+get_entities
+create_vein
+
+
+Worldview.py
+WorldView:
+draw_background
+draw_entities
+draw_viewport
+update_view
+update_view_tiles
+update_tile
+get_tile_image
+create_mouse_surface
+update_mouse_cursor
+mouse_move
