@@ -4,6 +4,7 @@ import worldmodel
 import image_store
 import random
 
+
 class Background:
    def __init__(self, name, imgs):
       self.name = name
@@ -18,8 +19,38 @@ class Background:
    def get_name(self):
       return self.name
    def next_image(self):
-      self.current_img = (self.current_img + 1) % len(self.imgs) 
+      self.current_img = (self.current_img + 1) % len(self.imgs)
 
+class Entity(object):
+   def __init__(self, name, position, imgs):
+      self.name = name
+      self.position = position
+      self.imgs = imgs
+      self.current_img = 0
+
+   def set_position(self, point):
+      self.position = point
+
+   def get_position(self):
+      return self.position
+
+   def get_images(self):
+      return self.imgs
+
+   def get_image(self):
+      return self.imgs[self.current_img]
+
+class Miner(Entity):
+   def __init__(self, name, resource_limit, position, rate, imgs, animation_rate):
+      self.resource_limit = resource_limit
+      self.rate = rate
+      self.imgs = imgs
+      self.animation_rate = animation_rate
+      super(Miner, self).__init__(name, position)
+      super(Miner, self).set_position(point)
+      super(Miner, self).get_position()
+      super(Miner, self).get_images()
+      super(Miner, self).get_image()
 
 class MinerNotFull:
    def __init__(self, name, resource_limit, position, rate, imgs,
