@@ -47,9 +47,21 @@ class Entity(object):
    def get_name(self):
       return self.name
 
+class ActionItems(Entity):
+   def remove_pending_action(self, action):
+      self.pending_actions.remove(action)
+
+   def add_pending_action(self, action):
+      self.pending_actions.append(action)
+
+   def get_pending_actions(self):
+      return self.pending_actions
+
+   def clear_pending_actions(self):
+      self.pending_actions = []
 
 
-class Miner(Entity):
+class Miner(Dudes):
    def __init__(self, name, resource_limit, position, rate, imgs, animation_rate):
       self.resource_count = 0
       self.current_image = 0
@@ -75,18 +87,6 @@ class Miner(Entity):
 
    def get_animation_rate(self):
       return self.animation_rate
-
-   def remove_pending_action(self, action):
-      self.pending_actions.remove(action)
-
-   def add_pending_action(self, action):
-      self.pending_actions.append(action)
-
-   def get_pending_actions(self):
-      return self.pending_actions
-
-   def clear_pending_actions(self):
-      self.pending_actions = []
 
    def clear_pending_actions_new(self, world):
       for action in self.get_pending_actions():
@@ -233,18 +233,6 @@ class Vein(Entity):
       return self.resource_distance
 
 
-   def remove_pending_action(self, action):
-      self.pending_actions.remove(action)
-
-   def add_pending_action(self, action):
-      self.pending_actions.append(action)
-
-   def get_pending_actions(self):
-      return self.pending_actions
-     
-   def clear_pending_actions(self):
-      self.pending_actions = []
-
    def entity_string(self):
       return ' '.join(['vein', self.name, str(self.position.x),
          str(self.position.y), str(self.rate),
@@ -294,18 +282,6 @@ class Ore(Entity):
    def get_rate(self):
       return self.rate
 
-
-   def remove_pending_action(self, action):
-      self.pending_actions.remove(action)
-
-   def add_pending_action(self, action):
-      self.pending_actions.append(action)
-
-   def get_pending_actions(self):
-      return self.pending_actions
-   
-   def clear_pending_actions(self):
-      self.pending_actions = []
 
    def entity_string(self):
       return ' '.join(['ore', self.name, str(self.position.x),
@@ -365,18 +341,6 @@ class Blacksmith(Entity):
    def get_resource_distance(self):
       return self.resource_distance
 
-   def remove_pending_action(self, action):
-      self.pending_actions.remove(action)
-
-   def add_pending_action(self, action):
-      self.pending_actions.append(action)
-
-   def get_pending_actions(self):
-      return self.pending_actions
-      
-   def clear_pending_actions(self):
-      self.pending_actions = []
-
    def entity_string(self):
       return ' '.join(['blacksmith', self.name, str(self.position.x),
          str(self.position.y), str(self.resource_limit),
@@ -406,20 +370,6 @@ class OreBlob(Entity):
 
    def get_animation_rate(self):
       return self.animation_rate
-
-   def remove_pending_action(self, action):
-      self.pending_actions.remove(action)
-
-   def add_pending_action(self, action):
-      self.pending_actions.append(action)
-
-   def get_pending_actions(self):
-      return self.pending_actions
-      
-
-   def clear_pending_actions(self):
-      self.pending_actions = []
-
 
    def blob_to_vein(self, world, vein):
       entity_pt = self.get_position()
@@ -480,18 +430,6 @@ class Quake(Entity):
 
    def get_animation_rate(self):
       return self.animation_rate
-
-   def remove_pending_action(self, action):
-      self.pending_actions.remove(action)
-
-   def add_pending_action(self, action):
-      self.pending_actions.append(action)
-
-   def get_pending_actions(self):
-      return self.pending_actions
-      
-   def clear_pending_actions(self):
-      self.pending_actions = []
 
    def schedule_quake(self, world, ticks):
       actions.schedule_animation(self, world, actions.QUAKE_STEPS)
