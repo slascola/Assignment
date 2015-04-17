@@ -60,21 +60,11 @@ class ActionItems(Entity):
    def clear_pending_actions(self):
       self.pending_actions = []
 
-
-class Miner(Dudes):
-   def __init__(self, name, resource_limit, position, rate, imgs, animation_rate):
-      self.resource_count = 0
-      self.current_image = 0
-      self.resource_limit = resource_limit
+class Dudes(ActionItems):
+   def __init__(self, name, position, imgs, rate, resource_limit):
       self.rate = rate
-      self.animation_rate = animation_rate
-      self.pending_actions = []
       self.resource_limit = resource_limit
-      super(Miner, self).__init__(name, position, imgs)
-
-
-   def get_rate(self):
-      return self.rate
+      super(Dudes, self).__init__(name, position, imgs)
 
    def set_resource_count(self, n):
       self.resource_count = n
@@ -84,6 +74,19 @@ class Miner(Dudes):
 
    def get_resource_limit(self):
       return self.resource_limit
+
+class Miner(Dudes):
+   def __init__(self, name, resource_limit, position, rate, imgs, animation_rate):
+      self.resource_count = 0
+      self.current_img = 0
+      self.animation_rate = animation_rate
+      self.pending_actions = []
+      self.resource_limit = resource_limit
+      super(Miner, self).__init__(name, position, imgs, rate, resource_limit)
+
+
+   def get_rate(self):
+      return self.rate
 
    def get_animation_rate(self):
       return self.animation_rate
@@ -108,10 +111,39 @@ class Miner(Dudes):
          ticks + self.get_rate())
       actions.schedule_animation(self, world)
 
+class Blacksmith(Dudes):
+   def __init__(self, name, position, imgs, resource_limit, rate,
+      resource_distance=1):
+      self.current_img = 0
+      self.resource_count = 0
+      self.resource_distance = resource_distance
+      self.pending_actions = []
+      super(Blacksmith, self).__init__(name, position, imgs, rate, resource_limit)
+
+   def get_rate(self):
+      return self.rate
+
+   def set_resource_count(self, n):
+      self.resource_count = n
+
+   def get_resource_count(self):
+      return self.resource_count
+
+   def get_resource_limit(self):
+      return self.resource_limit
+
+   def get_resource_distance(self):
+      return self.resource_distance
+
+   def entity_string(self):
+      return ' '.join(['blacksmith', self.name, str(self.position.x),
+         str(self.position.y), str(self.resource_limit),
+         str(self.rate), str(self.resource_distance)])
+
 
 class MinerNotFull(Miner):
    def __init__(self, name, resource_limit, position, rate, imgs, animation_rate):
-      self.current_image = 0
+      self.current_img = 0
       self.resource_count = 0
       self.pending_actions = []
       super(MinerNotFull, self).__init__(name, resource_limit, position, rate, imgs, animation_rate)
@@ -168,7 +200,7 @@ class MinerNotFull(Miner):
 class MinerFull(Miner):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
-      self.current_image = 0
+      self.current_img = 0
       self.resource_count = resource_limit
       self.pending_actions = []
       super(MinerFull, self).__init__(name, resource_limit, position, rate, imgs, animation_rate)
@@ -220,7 +252,7 @@ class MinerFull(Miner):
 class Vein(Entity):
    def __init__(self, name, rate, position, imgs, resource_distance=1):
       self.rate = rate
-      self.current_image = 0
+      self.current_img = 0
       self.resource_distance = resource_distance
       self.pending_actions = []
       super(Vein, self).__init__(name, position, imgs)
@@ -273,7 +305,7 @@ class Vein(Entity):
 
 class Ore(Entity):
    def __init__(self, name, position, imgs, rate=5000):
-      self.current_image = 0
+      self.current_img = 0
       self.rate = rate
       self.pending_actions = []
       super(Ore, self).__init__(name, position, imgs)
@@ -315,41 +347,9 @@ class Ore(Entity):
       return blob
 
 
-class Blacksmith(Entity):
-   def __init__(self, name, position, imgs, resource_limit, rate,
-      resource_distance=1):
-      self.current_image = 0
-      self.resource_limit = resource_limit
-      self.resource_count = 0
-      self.rate = rate
-      self.resource_distance = resource_distance
-      self.pending_actions = []
-      super(Blacksmith, self).__init__(name, position, imgs)
-
-   def get_rate(self):
-      return self.rate        
-
-   def set_resource_count(self, n):              
-      self.resource_count = n   
-
-   def get_resource_count(self):
-      return self.resource_count             
-
-   def get_resource_limit(self):
-      return self.resource_limit
-
-   def get_resource_distance(self):
-      return self.resource_distance
-
-   def entity_string(self):
-      return ' '.join(['blacksmith', self.name, str(self.position.x),
-         str(self.position.y), str(self.resource_limit),
-         str(self.rate), str(self.resource_distance)])
-
-
 class Obstacle(Entity):
    def __init__(self, name, position, imgs):
-      self.current_image = 0
+      self.current_img = 0
       super(Obstacle, self).__init__(name, position, imgs)
 
    def entity_string(self):
@@ -358,7 +358,7 @@ class Obstacle(Entity):
 
 class OreBlob(Entity):
    def __init__(self, name, position, rate, imgs, animation_rate):
-      self.current_image = 0
+      self.current_img = 0
       self.rate = rate
       self.animation_rate = animation_rate
       self.pending_actions = []
@@ -422,7 +422,7 @@ class OreBlob(Entity):
 
 class Quake(Entity):
    def __init__(self, name, position, imgs, animation_rate):
-      self.current_image = 0
+      self.current_img = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
       super(Quake, self).__init__(name, position, imgs)
