@@ -103,12 +103,6 @@ class Miner(Entity):
 
       return new_entity
 
-   def create_miner_action(self, world, image_store):
-      if isinstance(self, MinerNotFull):
-         return self.create_miner_not_full_action(world, image_store)
-      elif isinstance(self, MinerFull):
-          return self.create_miner_full_action(world, image_store)
-
    def schedule_miner(self, world, ticks, i_store):
       actions.schedule_action(self, world, self.create_miner_action(world, i_store),
          ticks + self.get_rate())
@@ -141,7 +135,7 @@ class MinerNotFull(Miner):
          new_pt = actions.next_position(world, entity_pt, ore_pt)
          return (world.move_entity(self, new_pt), False)
 
-   def create_miner_not_full_action(self, world, i_store):
+   def create_miner_action(self, world, i_store):
       def action(current_ticks):
          self.remove_pending_action(action)
 
@@ -170,30 +164,6 @@ class MinerNotFull(Miner):
             self.get_images(), self.get_animation_rate())
          return new_entity
 
-   #def try_transform_miner(self, world, transform):
-    #  new_entity = transform(world)
-     # if self != new_entity:
-      #   self.clear_pending_actions_new(world)
-       #  world.remove_entity_at(self.get_position())
-        # world.add_entity(new_entity)
-         #actions.schedule_animation(new_entity, world)
-
-      #return new_entity
-
-  # def create_miner_action(self, world, image_store):
-   #   if isinstance(self, MinerNotFull):
-    #     return self.create_miner_not_full_action(world, image_store)
-
-
-   #def schedule_miner(self, world, ticks, i_store):
-    #  actions.schedule_action(self, world, self.create_miner_action(world, i_store),
-     #    ticks + self.get_rate())
-      #actions.schedule_animation(self, world)
-
-  # def clear_pending_actions_new(self, world):
-   #   for action in self.get_pending_actions():
-    #     world.unschedule_action(action)
-     # self.clear_pending_actions()
 
 class MinerFull(Miner):
    def __init__(self, name, resource_limit, position, rate, imgs,
@@ -219,7 +189,7 @@ class MinerFull(Miner):
          new_pt = actions.next_position(world, entity_pt, smith_pt)
          return (world.move_entity(self, new_pt), False)
 
-   def create_miner_full_action(self, world, i_store):
+   def create_miner_action(self, world, i_store):
       def action(current_ticks):
          self.remove_pending_action(action)
 
@@ -250,6 +220,7 @@ class MinerFull(Miner):
 class Vein(Entity):
    def __init__(self, name, rate, position, imgs, resource_distance=1):
       self.rate = rate
+      self.current_image = 0
       self.resource_distance = resource_distance
       self.pending_actions = []
       super(Vein, self).__init__(name, position, imgs)
@@ -314,7 +285,7 @@ class Vein(Entity):
 
 class Ore(Entity):
    def __init__(self, name, position, imgs, rate=5000):
-
+      self.current_image = 0
       self.rate = rate
       self.pending_actions = []
       super(Ore, self).__init__(name, position, imgs)
@@ -371,6 +342,7 @@ class Ore(Entity):
 class Blacksmith(Entity):
    def __init__(self, name, position, imgs, resource_limit, rate,
       resource_distance=1):
+      self.current_image = 0
       self.resource_limit = resource_limit
       self.resource_count = 0
       self.rate = rate
@@ -413,6 +385,7 @@ class Blacksmith(Entity):
 
 class Obstacle(Entity):
    def __init__(self, name, position, imgs):
+      self.current_image = 0
       super(Obstacle, self).__init__(name, position, imgs)
 
    def entity_string(self):
@@ -421,6 +394,7 @@ class Obstacle(Entity):
 
 class OreBlob(Entity):
    def __init__(self, name, position, rate, imgs, animation_rate):
+      self.current_image = 0
       self.rate = rate
       self.animation_rate = animation_rate
       self.pending_actions = []
@@ -498,6 +472,7 @@ class OreBlob(Entity):
 
 class Quake(Entity):
    def __init__(self, name, position, imgs, animation_rate):
+      self.current_image = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
       super(Quake, self).__init__(name, position, imgs)
