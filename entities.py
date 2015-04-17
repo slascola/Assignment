@@ -75,6 +75,9 @@ class Dudes(ActionItems):
    def get_resource_limit(self):
       return self.resource_limit
 
+   def get_rate(self):
+      return self.rate
+
 class Miner(Dudes):
    def __init__(self, name, resource_limit, position, rate, imgs, animation_rate):
       self.resource_count = 0
@@ -83,10 +86,6 @@ class Miner(Dudes):
       self.pending_actions = []
       self.resource_limit = resource_limit
       super(Miner, self).__init__(name, position, imgs, rate, resource_limit)
-
-
-   def get_rate(self):
-      return self.rate
 
    def get_animation_rate(self):
       return self.animation_rate
@@ -119,21 +118,6 @@ class Blacksmith(Dudes):
       self.resource_distance = resource_distance
       self.pending_actions = []
       super(Blacksmith, self).__init__(name, position, imgs, rate, resource_limit)
-
-   def get_rate(self):
-      return self.rate
-
-   def set_resource_count(self, n):
-      self.resource_count = n
-
-   def get_resource_count(self):
-      return self.resource_count
-
-   def get_resource_limit(self):
-      return self.resource_limit
-
-   def get_resource_distance(self):
-      return self.resource_distance
 
    def entity_string(self):
       return ' '.join(['blacksmith', self.name, str(self.position.x),
@@ -249,7 +233,7 @@ class MinerFull(Miner):
       return new_entity
 
 
-class Vein(Entity):
+class Vein(ActionItems):
    def __init__(self, name, rate, position, imgs, resource_distance=1):
       self.rate = rate
       self.current_img = 0
@@ -303,7 +287,7 @@ class Vein(Entity):
       return ore
 
 
-class Ore(Entity):
+class Ore(ActionItems):
    def __init__(self, name, position, imgs, rate=5000):
       self.current_img = 0
       self.rate = rate
@@ -356,7 +340,7 @@ class Obstacle(Entity):
       return ' '.join(['obstacle', self.name, str(self.position.x),
          str(self.position.y)])
 
-class OreBlob(Entity):
+class OreBlob(ActionItems):
    def __init__(self, name, position, rate, imgs, animation_rate):
       self.current_img = 0
       self.rate = rate
@@ -420,7 +404,7 @@ class OreBlob(Entity):
       return quake
 
 
-class Quake(Entity):
+class Quake(ActionItems):
    def __init__(self, name, position, imgs, animation_rate):
       self.current_img = 0
       self.animation_rate = animation_rate
