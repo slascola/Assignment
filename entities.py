@@ -60,6 +60,31 @@ class ActionItems(Entity):
    def clear_pending_actions(self):
       self.pending_actions = []
 
+class Quake(ActionItems):
+   def __init__(self, name, position, imgs, animation_rate):
+      self.current_img = 0
+      self.animation_rate = animation_rate
+      self.pending_actions = []
+      super(Quake, self).__init__(name, position, imgs)
+
+
+   def get_animation_rate(self):
+      return self.animation_rate
+
+   def schedule_quake(self, world, ticks):
+      actions.schedule_animation(self, world, actions.QUAKE_STEPS)
+      actions.schedule_action(self, world, self.create_entity_death_action(world),
+         ticks + actions.QUAKE_DURATION)
+
+   def create_entity_death_action(self, world):
+      def action(current_ticks):
+         self.remove_pending_action(action)
+         pt = self.get_position()
+         actions.remove_entity(self, world)
+         return [pt]
+      return action
+
+
 class Dudes(ActionItems):
    def __init__(self, name, position, imgs, rate, resource_limit):
       self.rate = rate
@@ -232,18 +257,21 @@ class MinerFull(Miner):
 
       return new_entity
 
-
-class Vein(ActionItems):
-   def __init__(self, name, rate, position, imgs, resource_distance=1):
+class Rate(ActionItems):
+   def __init__(self, name, position, imgs, rate):
       self.rate = rate
-      self.current_img = 0
-      self.resource_distance = resource_distance
-      self.pending_actions = []
-      super(Vein, self).__init__(name, position, imgs)
-
+      super(Rate, self).__init__(name, position, imgs)
 
    def get_rate(self):
       return self.rate
+
+class Vein(Rate):
+   def __init__(self, name, rate, position, imgs, resource_distance=1):
+      self.current_img = 0
+      self.resource_distance = resource_distance
+      self.pending_actions = []
+      super(Vein, self).__init__(name, position, imgs, rate)
+
 
    def get_resource_distance(self):
       return self.resource_distance
@@ -287,17 +315,11 @@ class Vein(ActionItems):
       return ore
 
 
-class Ore(ActionItems):
+class Ore(Rate):
    def __init__(self, name, position, imgs, rate=5000):
       self.current_img = 0
-      self.rate = rate
       self.pending_actions = []
-      super(Ore, self).__init__(name, position, imgs)
-
-
-   def get_rate(self):
-      return self.rate
-
+      super(Ore, self).__init__(name, position, imgs, rate)
 
    def entity_string(self):
       return ' '.join(['ore', self.name, str(self.position.x),
@@ -340,17 +362,13 @@ class Obstacle(Entity):
       return ' '.join(['obstacle', self.name, str(self.position.x),
          str(self.position.y)])
 
-class OreBlob(ActionItems):
+class OreBlob(Rate):
    def __init__(self, name, position, rate, imgs, animation_rate):
       self.current_img = 0
-      self.rate = rate
       self.animation_rate = animation_rate
       self.pending_actions = []
-      super(OreBlob, self).__init__(name, position, imgs)
+      super(OreBlob, self).__init__(name, position, imgs, rate)
 
-
-   def get_rate(self):
-      return self.rate
 
    def get_animation_rate(self):
       return self.animation_rate
@@ -404,29 +422,6 @@ class OreBlob(ActionItems):
       return quake
 
 
-class Quake(ActionItems):
-   def __init__(self, name, position, imgs, animation_rate):
-      self.current_img = 0
-      self.animation_rate = animation_rate
-      self.pending_actions = []
-      super(Quake, self).__init__(name, position, imgs)
-
-
-   def get_animation_rate(self):
-      return self.animation_rate
-
-   def schedule_quake(self, world, ticks):
-      actions.schedule_animation(self, world, actions.QUAKE_STEPS)
-      actions.schedule_action(self, world, self.create_entity_death_action(world),
-         ticks + actions.QUAKE_DURATION)
-
-   def create_entity_death_action(self, world):
-      def action(current_ticks):
-         self.remove_pending_action(action)
-         pt = self.get_position()
-         actions.remove_entity(self, world)
-         return [pt]
-      return action
 
 
 
