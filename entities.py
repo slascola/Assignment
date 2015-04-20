@@ -130,6 +130,9 @@ class Miner(Dudes):
 
       return new_entity
 
+   def create_miner_action(self, world, i_store):
+      pass
+
    def schedule_miner(self, world, ticks, i_store):
       actions.schedule_action(self, world, self.create_miner_action(world, i_store),
          ticks + self.get_rate())
