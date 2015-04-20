@@ -6,6 +6,7 @@ import point
 import pygame
 import random
 import save_load
+import controller
 import worldview
 import worldmodel
 

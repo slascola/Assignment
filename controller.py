@@ -8,6 +8,7 @@ KEY_INTERVAL = 100
 
 TIMER_FREQUENCY = 100
 
+
 def on_keydown(event):
    x_delta = 0
    y_delta = 0
